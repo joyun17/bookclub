@@ -23,13 +23,13 @@
     <context:component-scan base-package="org.fullstack4.bookclub.controller"></context:component-scan>
 
 
-<!--    <beans:bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">-->
-<!--        <beans:property name="formatters">-->
-<!--            <beans:set>-->
-<!--                <beans:bean class="org.fullstack4.bookclub.controller.formatter.LocalDateFormatter"/>-->
-<!--            </beans:set>-->
-<!--        </beans:property>-->
-<!--    </beans:bean>-->
+    <beans:bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <beans:property name="formatters">
+            <beans:set>
+                <beans:bean class="org.fullstack4.bookclub.controller.formatter.LocalDateFormatter"/>
+            </beans:set>
+        </beans:property>
+    </beans:bean>
 
     <annotation-driven conversion-service="conversionService"></annotation-driven>
 
