@@ -19,24 +19,11 @@
                            http://www.springframework.org/schema/mvc
                            https://www.springframework.org/schema/mvc/spring-mvc.xsd"
 >
-    <!--    <bean class="org.fullstack4.springmvc.sample.SampleDAO" />-->
-    <!--    <bean class="org.fullstack4.springmvc.sample.SampleService" />-->
-
-    <!--    <context:component-scan base-package="org.fullstack4.springmvc.sample" />-->
-    <!--    <context:component-scan base-package="org.fullstack4.springmvc.controller" />-->
-    <!--    <context:component-scan base-package="org.fullstack4.springmvc.dao" />-->
-    <!--    <context:component-scan base-package="org.fullstack4.springmvc.utils" />-->
 
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
-        <!--윤 강의실용-->
-        <!--        <property name="jdbcUrl" value="jdbc:mariadb://10.41.2.198:3306/genius"></property>-->
-        <!--지현 로컬용-->
-        <!--                <property name="jdbcUrl" value="jdbc:mariadb://192.168.0.13:3306/genius"></property>-->
-        <!--각자 로컬용-->
-        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/genius_sample"></property>
-        <!--        테스트 용-->
-        <!--        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/genius"></property>-->
+
+        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/bookclub"></property>
         <property name="username" value="genius"></property>
         <property name="password" value="1234"></property>
         <property name="dataSourceProperties">
