@@ -12,7 +12,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class LoginController {
     @GetMapping("/login")
-    public void GETLogin(){
-        log.info("난 로그인 화면");
-    }
+    public void GETLogin(){}
 }
