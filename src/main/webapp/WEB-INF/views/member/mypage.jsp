@@ -68,10 +68,10 @@
         <input type="text" class="form-control" id="phone2" name="phone2">
     </div>
 
-<%--    <div class="col-md-2">--%>
-<%--        <label for="inputZip" class="form-label">Zip</label>--%>
-<%--        <input type="text" class="form-control" id="inputZip">--%>
-<%--    </div>--%>
+    <%--    <div class="col-md-2">--%>
+    <%--        <label for="inputZip" class="form-label">Zip</label>--%>
+    <%--        <input type="text" class="form-control" id="inputZip">--%>
+    <%--    </div>--%>
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Sign in</button>
