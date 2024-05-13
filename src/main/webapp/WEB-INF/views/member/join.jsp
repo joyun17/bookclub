@@ -102,6 +102,8 @@
         </div>
         <br><br>
         <button class="w-100 btn btn-lg btn-primary" type="submit">회원가입</button>
+        <br><br>
+        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/login/login'">취소</button>
     </form>
 
 </main>

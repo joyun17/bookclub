@@ -23,6 +23,8 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class LoginController {
     private final MemberServiceIf memberServiceIf;
+    @GetMapping("/find")
+    public void GETFind(){}
     @GetMapping("/login")
     public void GETLogin(){}
 
@@ -60,4 +62,5 @@ public class LoginController {
         }
         return "redirect:/";
     }
+
 }

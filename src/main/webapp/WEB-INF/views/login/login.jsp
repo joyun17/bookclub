@@ -90,12 +90,23 @@
         <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
         <br><br>
         <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/member/join'">회원가입</button>
+        <br><br>
+        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/login/find'">패스워드 찾기</button>
     </form>
 
 </main>
 
 
-
+<script>
+    let id_reg = /^[a-z0-9]+$/;
+    let member_id = document.getElementById("member_id");
+    member_id.addEventListener("keyup",function(e){
+        if(!id_reg.test(this.value)){
+            this.value = this.value.replace(/[^a-z0-9]/g, '');
+        }
+        alert("영어 소문자 및 숫자만 입력이 가능합니다.");
+    });
+</script>
 </body>
 </html>
 
