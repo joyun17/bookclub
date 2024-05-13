@@ -13,15 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberDTO {
+public class LoginDTO {
     private String member_id;
     private String password;
     private String name;
     private String password2;
     private String phone;
-    private String phone0;
-    private String phone1;
-    private String phone2;
     private String email;
     private LocalDateTime reg_date;
     private LocalDateTime recent_date;

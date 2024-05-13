@@ -24,7 +24,7 @@
         <property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
 
         <property name="jdbcUrl" value="jdbc:mariadb://localhost:3306/bookclub"></property>
-        <property name="username" value="genius"></property>
+        <property name="username" value="root"></property>
         <property name="password" value="1234"></property>
         <property name="dataSourceProperties">
             <props>
@@ -77,7 +77,7 @@
     </aop:config>
 
 
-    <mybatis:scan base-package="org.fullstack4.genius.mapper"></mybatis:scan>
+    <mybatis:scan base-package="org.fullstack4.bookclub.mapper"></mybatis:scan>
 
     <context:component-scan base-package="org.fullstack4.bookclub.config"></context:component-scan>
     <context:component-scan base-package="org.fullstack4.bookclub.service"></context:component-scan>
