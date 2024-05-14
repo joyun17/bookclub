@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: USER
@@ -36,29 +37,39 @@
   </style>
 </head>
 <body class="text-center">
-<main class="form-signin">
-  <form action="/login/login" method="post" name="frmLogin">
+<c:if test="${param.noId == '1'}">
+  <script>
+    alert("아이디를 입력해주세요.");
+  </script>
+</c:if>
+<c:if test="${param.noId == '2'}">
+  <script>
+    alert("일치하는 아이디가 없습니다.");
+  </script>
+</c:if>
+  <main class="form-signin">
+    <form action="/login/find" method="post" name="frmLogin">
 
-    <h1 class="h3 mb-3 fw-normal">비밀번호를 잊으셨나요?</h1>
+      <h1 class="h3 mb-3 fw-normal">비밀번호를 잊으셨나요?</h1>
 
-    <div class="form-floating">
-      <input type="text" class="form-control" name="member_id" id="member_id" placeholder="아이디">
-      <label for="member_id">아이디</label>
-      <br><br>
-      <button class="w-100 btn btn-lg btn-primary">임시 비밀번호 발송</button>
-    </div>
-    <div class="form-floating">
-      <p>아이디 입력 후 임시 비밀번호 발송 버튼을 눌러주세요</p>
-      <p>가입하신 이메일 주소로 임시비밀번호가 발송됩니다 <br>메일 서비스에 따라 다소 시간이 걸릴 수 있습니다.</p>
-      <p>임시 비밀번호는 발송 후, 1시간 내에만 유효합니다.</p>
-    </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" name="member_id" id="member_id" placeholder="아이디">
+        <label for="member_id">아이디</label>
+        <br><br>
+        <button class="w-100 btn btn-lg btn-primary">임시 비밀번호 발송</button>
+      </div>
+      <div class="form-floating">
+        <p>아이디 입력 후 임시 비밀번호 발송 버튼을 눌러주세요</p>
+        <p>가입하신 이메일 주소로 임시비밀번호가 발송됩니다 <br>메일 서비스에 따라 다소 시간이 걸릴 수 있습니다.</p>
+        <p>임시 비밀번호는 발송 후, 1시간 내에만 유효합니다.</p>
+      </div>
 
 
-    <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/login/login'">취소</button>
+      <button class="w-100 btn btn-lg btn-secondary" type="button" onclick="location.href='/login/login'">취소</button>
 
-  </form>
+    </form>
 
-</main>
+  </main>
 
 </body>
 </html>

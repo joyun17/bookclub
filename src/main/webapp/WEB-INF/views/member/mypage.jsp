@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: user
@@ -20,41 +21,47 @@
     </style>
 </head>
 <body class="text-center">
-<h1>메인입니다.</h1>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <form class="row g-3 form-signin">
     <div class="col-md-6">
         <label for="inputEmail4" class="form-label">아이디</label>
-        <input type="email" class="form-control" readonly id="inputEmail4">
+        <input type="text" class="form-control" value="${memberDTO.member_id}"  readonly id="inputEmail4">
     </div>
     <div class="col-md-6">
         <label for="inputPassword4" class="form-label">이름</label>
-        <input type="password" class="form-control" readonly id="inputPassword4">
+        <input type="text" class="form-control" value="${memberDTO.name}" readonly id="inputPassword4">
     </div>
     <div class="col-12">
         <label for="inputAddress" class="form-label">비밀번호</label>
-        <input type="text" class="form-control" id="inputAddress">
+        <input type="password" class="form-control" id="inputAddress">
     </div>
     <div class="col-12">
         <label for="inputAddress2" class="form-label">비밀번호 확인</label>
-        <input type="text" class="form-control" id="inputAddress2">
+        <input type="password" class="form-control" id="inputAddress2">
     </div>
     <div class="col-md-6">
         <label for="inputCity" class="form-label">이메일</label>
-        <input type="text" class="form-control" id="inputCity">
+        <input type="text" class="form-control" value="${fn:split(memberDTO.email,'@')[0]}" id="inputCity">
     </div>
     <span style="width: fit-content; line-height: 100px">@</span>
     <div class="col-md-5">
         <label for="inputState" class="form-label">&nbsp;&nbsp;&nbsp;</label>
         <select id="inputState" class="form-select">
-            <option selected>Choose...</option>
-            <option>...</option>
+            <option>gmail.com</option>
+            <option>naver.com</option>
+            <option>hanmail.net</option>
+            <option>nate.com</option>
+            <option>직접입력</option>
         </select>
     </div>
     <div class="col-md-3">
         <label for="inputState" class="form-label">전화번호</label>
         <select id="phone0" name="phone0" class="form-select">
-            <option selected>Choose...</option>
-            <option>...</option>
+            <option>010</option>
+            <option>011</option>
+            <option>016</option>
+            <option>017</option>
+            <option>018</option>
         </select>
     </div>
     <span style="width: fit-content; line-height: 100px">-</span>
@@ -74,7 +81,7 @@
     <%--    </div>--%>
 
     <div class="col-12">
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <button type="submit" class="btn btn-primary">수정</button>
     </div>
 </form>
 </body>

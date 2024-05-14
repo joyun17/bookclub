@@ -23,6 +23,13 @@ public class MemberServiceImpl implements MemberServiceIf{
     }
 
     @Override
+    public MemberDTO view(String member_id) {
+        MemberVO memberVO = memberMapper.view(member_id);
+        MemberDTO memberDTO = modelMapper.map(memberVO, MemberDTO.class);
+        return memberDTO;
+    }
+
+    @Override
     public MemberDTO login(String member_id, String pwd) {
         MemberVO memberVO = memberMapper.login(member_id);
         MemberDTO memberDTO = null;
@@ -30,5 +37,30 @@ public class MemberServiceImpl implements MemberServiceIf{
             memberDTO = modelMapper.map(memberVO, MemberDTO.class);
         }
         return memberDTO;
+    }
+
+    @Override
+    public int check_id(String member_id) {
+        return memberMapper.check_id(member_id);
+    }
+
+    @Override
+    public void fail_plus(String member_id) {
+        memberMapper.fail_plus(member_id);
+    }
+
+    @Override
+    public void update_status(String member_id) {
+        memberMapper.update_status(member_id);
+    }
+
+    @Override
+    public void update_pwd(String member_id, String pwd) {
+        memberMapper.update_pwd(member_id, pwd);
+    }
+
+    @Override
+    public void reset_fail(String member_id) {
+        memberMapper.reset_fail(member_id);
     }
 }

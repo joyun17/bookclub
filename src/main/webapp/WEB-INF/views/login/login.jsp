@@ -63,6 +63,21 @@
         alert("회원가입 성공! 로그인을 진행해주세요");
     </script>
 </c:if>
+<c:if test="${param.loginNO == '1'}">
+    <script>
+        alert("입력하신 아이디 또는 패스워드가 일치하지 않습니다.");
+    </script>
+</c:if>
+<c:if test="${param.loginX == '1'}">
+    <script>
+        alert("5회 이상 로그인 실패로 잠금 처리된 아이디 입니다. 관리자에게 문의해주세요.");
+    </script>
+</c:if>
+<c:if test="${param.newPwd != null}">
+    <script>
+        alert("새로운 비밀번호는 " + '${param.newPwd}' +  " 입니다.");
+    </script>
+</c:if>
 <main class="form-signin">
     <form action="/login/login" method="post" name="frmLogin">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-emoji-sunglasses" viewBox="0 0 16 16">
@@ -72,7 +87,7 @@
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
         <div class="form-floating">
-            <input type="text" class="form-control" name="member_id" id="member_id" placeholder="name@example.com">
+            <input type="text" class="form-control" name="member_id" id="member_id" value="${cookie.saveId.value}" placeholder="name@example.com">
             <label for="member_id">아이디</label>
         </div>
         <div class="form-floating">
@@ -82,16 +97,16 @@
 
         <div class="checkbox mb-3">
             <label>
-                <input type="checkbox" value="remember-me"> 자동 로그인
+                <input type="checkbox" name="auto" value="auto"> 자동 로그인
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" value="remember-me"> 아이디 저장
+                <input type="checkbox" name="save" value="save" <c:if test='${cookie.saveId.value != null}'>checked</c:if> > 아이디 저장
             </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+        <button class="w-100 btn btn-lg btn-primary"  type="submit">로그인</button>
         <br><br>
-        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/member/join'">회원가입</button>
+        <button class="w-100 btn btn-lg btn-secondary" type="button" onclick="location.href='/member/join'">회원가입</button>
         <br><br>
-        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/login/find'">패스워드 찾기</button>
+        <button class="w-100 btn btn-lg btn-secondary" type="button" onclick="location.href='/login/find'">패스워드 찾기</button>
     </form>
 
 </main>
@@ -103,8 +118,9 @@
     member_id.addEventListener("keyup",function(e){
         if(!id_reg.test(this.value)){
             this.value = this.value.replace(/[^a-z0-9]/g, '');
+            alert("영어 소문자 및 숫자만 입력이 가능합니다.");
         }
-        alert("영어 소문자 및 숫자만 입력이 가능합니다.");
+
     });
 </script>
 </body>

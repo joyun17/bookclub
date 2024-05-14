@@ -10,8 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Log4j2
@@ -24,7 +27,7 @@ public class MemberController {
     public void GETJoin(){
 
     }
-    @PostMapping("join")
+    @PostMapping("/join")
     public String POSTJoin(@Valid MemberDTO memberDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes
@@ -48,6 +51,12 @@ public class MemberController {
             return "redirect:/member/join";
         }
 
+    }
+    @GetMapping("/mypage")
+    public void GETMyPage(@RequestParam(name = "member_id") String member_id,
+                          Model model){
+        MemberDTO memberDTO = memberService.view(member_id);
+        model.addAttribute("memberDTO", memberDTO);
     }
 
 }
