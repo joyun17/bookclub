@@ -15,4 +15,8 @@ public class MainController {
     public void main(){
 
     }
+    @GetMapping("/mystudy")
+    public void myStudy(){
+
+    }
 }

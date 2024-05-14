@@ -82,6 +82,7 @@
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">수정</button>
+        <button type="button" class="btn btn-secondary" onclick="location.href='/main/main'">취소</button>
     </div>
 </form>
 </body>

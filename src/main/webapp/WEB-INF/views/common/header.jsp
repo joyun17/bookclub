@@ -33,7 +33,7 @@
                         <a class="nav-link active" aria-current="page" href="#">오늘의 학습</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">나의 학습</a>
+                        <a class="nav-link active" aria-current="page" href="/main/mystudy">나의 학습</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">공유 학습</a>
