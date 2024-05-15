@@ -43,5 +43,9 @@
         SET password = #{pwd}
         WHERE member_id = #{member_id}
     </update>
+    <select id="memberList" resultType="org.fullstack4.bookclub.domain.MemberVO">
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
+        FROM tbl_member
+    </select>
 
 </mapper>
