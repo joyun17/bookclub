@@ -11,6 +11,37 @@
     <select id="login" resultType="org.fullstack4.bookclub.domain.MemberVO">
         SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
         FROM tbl_member
-        WHERE member_id = #{member_id} AND status = 'Y'
+        WHERE member_id = #{member_id}
     </select>
+    <select id="view" resultType="org.fullstack4.bookclub.domain.MemberVO">
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
+        FROM tbl_member
+        WHERE member_id = #{member_id}
+    </select>
+    <update id="fail_plus">
+        UPDATE tbl_member
+        SET fail_count = fail_count + 1
+        where member_id = #{member_id}
+    </update>
+    <update id="reset_fail">
+        UPDATE tbl_member
+        SET fail_count = 0
+        where member_id = #{member_id}
+    </update>
+    <select id="check_id" resultType="int">
+        SELECT count(*)
+        FROM tbl_member
+        WHERE member_id = #{member_id}
+    </select>
+    <update id="update_status">
+        UPDATE tbl_member
+        SET status = 'N'
+        WHERE member_id = #{member_id}
+    </update>
+    <update id="update_pwd">
+        UPDATE tbl_member
+        SET password = #{pwd}
+        WHERE member_id = #{member_id}
+    </update>
+
 </mapper>
