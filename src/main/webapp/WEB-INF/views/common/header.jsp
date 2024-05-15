@@ -36,11 +36,11 @@
                         <a class="nav-link active" aria-current="page" href="/main/mystudy">나의 학습</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">공유 학습</a>
+                        <a class="nav-link active" aria-current="page" href="/main/sharestudy">공유 학습</a>
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" style="border: 0; width: 80px" readonly value="${sessionScope.loginInfo.name}" aria-label="Search">
+                    <input class="form-control me-2" type="search" style="border: 0; width: 80px" readonly value="${sessionScope.login_info.name}" aria-label="Search">
                     <button class="btn btn-outline-success" type="button" onclick="location.href='/login/logout'">로그아웃</button>
                 </form>
             </div>

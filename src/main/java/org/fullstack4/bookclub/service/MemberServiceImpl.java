@@ -8,6 +8,9 @@ import org.fullstack4.bookclub.mapper.MemberMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -62,5 +65,13 @@ public class MemberServiceImpl implements MemberServiceIf{
     @Override
     public void reset_fail(String member_id) {
         memberMapper.reset_fail(member_id);
+    }
+
+    @Override
+    public List<MemberDTO> memberList() {
+        List<MemberDTO> memberDTOList = memberMapper.memberList().stream()
+                .map(memberVO -> modelMapper.map(memberVO,MemberDTO.class))
+                .collect(Collectors.toList());
+        return memberDTOList;
     }
 }
