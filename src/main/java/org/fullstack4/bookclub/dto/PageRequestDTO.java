@@ -69,6 +69,8 @@ public class PageRequestDTO {
     private String member_id;
     private String book_code;
     private String page_flag;
+    @Builder.Default
+    private String method="1";
 
 
     public void setTotal_count(int total_count) {

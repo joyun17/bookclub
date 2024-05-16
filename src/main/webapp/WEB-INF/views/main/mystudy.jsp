@@ -25,25 +25,25 @@
         <div class="row content">
             <div class="card">
                 <div class="card-body">
-
-                        <div class="mb-3">
-    <%--                        <c:set value="${fn:join(responseDTO.search_type, '')}" var="search_type"/>--%>
+                    <div class="input-group mb-3 dueDateDiv">
+                        <input type="date" name="search_date1" class="form-control search_date" value="${responseDTO.search_date1}">
+                        <input type="date" name="search_date2" class="form-control search_date" value="${responseDTO.search_date2}">
+                    </div>
+                    <div class="mb-3" style="display: flex">
+<%--                        <c:set value="${fn:join(responseDTO.search_type, '')}" var="search_type"/>--%>
+                        <div style="margin-top:15px;margin-right:10px">
                             <input type="radio" class="search_type" name="type" value="0" <c:if test="${responseDTO.type == '0'}"> checked</c:if>>전체
                             <input type="radio" class="search_type" name="type" value="1" <c:if test="${responseDTO.type == '1'}"> checked</c:if>>제목
                             <input type="radio" class="search_type" name="type" value="2" <c:if test="${responseDTO.type == '2'}"> checked</c:if>>작성자
-                            <input type="text" id="search_word" name="search_word" class="form-control" value="${responseDTO.search_word}">
                         </div>
-                        <div class="input-group mb-3 dueDateDiv">
-                            <input type="date" name="search_date1" class="form-control search_date" value="${responseDTO.search_date1}">
-                            <input type="date" name="search_date2" class="form-control search_date" value="${responseDTO.search_date2}">
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="float-end">
-                                <button class="btn btn-primary" id="btnSearch" type="submit">검색</button>
-                                <button class="btn btn-secondary" type="reset" onclick="location.href='/main/mystudy'">초기화</button>
+                        <input type="text" id="search_word" name="search_word" class="form-control" style="width: 850px;margin-right:10px;height: 50px" value="${responseDTO.search_word}">
+                        <div class="input-group mb-3" style="width: 210px; margin-top: 5px">
+                            <div class="float-end" >
+                                <button class="btn btn-primary" id="btnSearch" type="submit" style="width: 100px">검색</button>
+                                <button class="btn btn-secondary" type="reset" style="width: 100px" onclick="location.href='/main/mystudy'">초기화</button>
                             </div>
                         </div>
-
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,7 +133,6 @@
         <button class="btn btn-primary me-md-2" type="button" onclick="location.href='/main/studyregist'">등록</button>
 
     </div>
-    ${responseDTO}
 </div>
 
 <script>

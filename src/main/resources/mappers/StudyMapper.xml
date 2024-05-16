@@ -32,8 +32,8 @@
         </where>
     </sql>
     <insert id="regist">
-        INSERT INTO tbl_study(member_id, title, contents, show_status, tags, category, start_date, end_date)
-        VALUES(#{member_id}, #{title}, #{contents}, #{show_status}, #{tags}, #{category}, #{start_date}, #{end_date})
+        INSERT INTO tbl_study(member_id, title, contents, show_status, tags, category, start_date, end_date, img_path, img_org_name)
+        VALUES(#{member_id}, #{title}, #{contents}, #{show_status}, #{tags}, #{category}, #{start_date}, #{end_date}, #{img_path}, #{img_org_name})
     </insert>
     <select id="studyTotalCount" resultType="int">
         SELECT COUNT(*)
@@ -56,10 +56,19 @@
         LIMIT #{page_skip_count}, #{page_size}
     </select>
     <select id="view" resultType="org.fullstack4.bookclub.domain.StudyVO">
-        SELECT study_idx, title, contents, ts.reg_date, show_status, `like`, tags, category, ts.member_id, tm.name, start_date, end_date
+        SELECT study_idx, title, contents, ts.reg_date, show_status, `like`, tags, category, ts.member_id, tm.name, start_date, end_date, img_path, img_org_name
         FROM tbl_study as ts inner join tbl_member as tm
         ON ts.member_id = tm.member_id
         WHERE study_idx = #{study_idx}
     </select>
+    <update id="update">
+        UPDATE tbl_study
+        SET title = #{title},
+            contents = #{contents},
+            show_status = #{show_status},
+            category = #{category},
+            tags = #{tags}
+        WHERE study_idx = #{study_idx}
+    </update>
 
 </mapper>

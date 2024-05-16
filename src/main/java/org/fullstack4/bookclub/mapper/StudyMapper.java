@@ -11,4 +11,5 @@ public interface StudyMapper {
     int studyTotalCount(PageRequestDTO requestDTO);
     List<StudyVO> studyListByPage(PageRequestDTO requestDTO);
     StudyVO view(int study_idx);
+    int update(StudyVO studyVO);
 }
