@@ -79,19 +79,22 @@
                                 </div>
                                 <input type="hidden" id="category" name="category" value="">
                             </div>
+                            <c:set var="cate" value="${fn:split(studyDTO.category,'|')}"/>
+                            <c:forEach var="cates" items="${cate}">
                             <div class="col-lg-2"></div>
                             <div class="col-md-8 col-lg-10 row">
-                                <c:set var="cate" value="${fn:split(studyDTO.category,'|')}"/>
-                                <c:forEach var="cates" items="${cate}">
+
                                     <div class="col-9">
                                         <input type="text" class="form-control contentsList" value="${cates}">
                                     </div>
                                     <div class="col-3">
                                         <button type="button" class="btn btn-danger me-2 contentsDelBtn" onclick="delContents(this)">삭제</button>
                                     </div>
-                                </c:forEach>
+                                <br><br>
                             </div>
-                            <br><br>
+
+                            </c:forEach>
+
                         </div>
 
                         <div class="row mb-3" id="tagsBox">
@@ -103,19 +106,21 @@
                                 </div>
                                 <input type="hidden" id="tags" name="tags" value="">
                             </div>
+                            <c:set var="tag" value="${fn:split(studyDTO.tags,'|')}"/>
+                            <c:forEach var="tags" items="${tag}">
                             <div class="col-lg-2"></div>
                             <div class="col-md-8 col-lg-10 row">
-                                <c:set var="tag" value="${fn:split(studyDTO.tags,'|')}"/>
-                                <c:forEach var="tags" items="${tag}">
-                                    <div class="col-9">
-                                        <input type="text" class="form-control tagsList" value="${tags}">
-                                    </div>
-                                    <div class="col-3">
-                                        <button type="button" class="btn btn-danger me-2 tagsDelBtn" onclick="deltags(this)">삭제</button>
-                                    </div>
-                                </c:forEach>
+                                <div class="col-9">
+                                    <input type="text" class="form-control tagsList" value="${tags}">
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn btn-danger me-2 tagsDelBtn" onclick="deltags(this)">삭제</button>
+                                </div>
+                                <br><br>
                             </div>
-                            <br><br>
+
+                            </c:forEach>
+
                         </div>
 
 
@@ -142,8 +147,9 @@
     let tagsBox = document.getElementById("tagsBox");
     let tagsDelBtn = document.getElementsByClassName("tagsDelBtn");
     let id=1;
-    let categoryCount = 1;
-    let tagsCount = 1;
+    let categoryCount = document.getElementsByClassName("contentsList").length;
+    let tagsCount = document.getElementsByClassName("tagsList").length;
+    console.log(tagsCount)
     modifyBtn.addEventListener("click", function(e){
         e.preventDefault();
         let contentsStr = "";

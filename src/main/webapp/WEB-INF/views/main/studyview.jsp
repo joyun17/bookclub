@@ -97,12 +97,15 @@
                                 <c:forEach var="shareDTO" items="${shareDTOList}">
                                     <div>
                                         <input type="text" style="width: 80%" class="shareValue" name="inputValues" value="${shareDTO.name}(${shareDTO.member_id})">
-                                        <button onclick="deleteEl(this)">X</button>
+                                        <c:if test="${studyDTO.member_id == sessionScope.login_info.member_id}">
+                                            <button onclick="deleteEl(this)">X</button>
+                                        </c:if>
+
                                     </div>
                                 </c:forEach>
                             </div>
                             <div class="col-2">
-                                <select id="shareList" onchange="updateInput()">
+                                <select id="shareList" onchange="updateInput()" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>
                                     <c:forEach var="memberDTO" items="${memberDTOList}">
                                         <c:if test="${memberDTO.member_id != sessionScope.login_info.member_id}">
                                             <option>${memberDTO.name}(${memberDTO.member_id})</option>
@@ -112,7 +115,7 @@
                                 </select>
                             </div>
                             <div class="col-2">
-                                <button class="btn btn-primary" id="shareBtn">공유하기</button>
+                                <button class="btn btn-primary" id="shareBtn" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>공유하기</button>
                             </div>
 
                         </div>
@@ -156,15 +159,10 @@
                                 </c:forEach>
                             </div>
                             <div class="col-4">
-            <%--                    <div class="text-center d-flex justify-content-end">--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">목록</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">등록</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">수정</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">삭제</button>--%>
-            <%--                    </div>--%>
+                                <button type="button" id="likeBtn" onclick="location.href='/main/likeinsert?study_idx=${studyDTO.study_idx}&member_id=${sessionScope.login_info.member_id}'" class="btn btn-danger">
+                                    좋아요!
+                                </button>
+                                <span>${studyDTO.like}</span>
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -178,9 +176,11 @@
                                     &nbsp;&nbsp;
                                     <button type="button" class="btn btn-outline-success" onclick="">등록</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-outline-success" onclick="location.href='/main/studymodify?study_idx=${studyDTO.study_idx}'">수정</button>
-                                    &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-outline-success" onclick="">삭제</button>
+                                    <c:if test="${sessionScope.login_info.member_id == studyDTO.member_id}">
+                                        <button type="button" class="btn btn-outline-success" onclick="location.href='/main/studymodify?study_idx=${studyDTO.study_idx}'">수정</button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="btn btn-outline-success" onclick="">삭제</button>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>

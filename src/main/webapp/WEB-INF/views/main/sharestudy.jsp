@@ -150,7 +150,6 @@
         </nav>
     </div>
 </div>
-${responseDTO}
 <script>
     let shareBtn1 = document.getElementById("shareBtn1");
     shareBtn1.addEventListener("click", function(e){

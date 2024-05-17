@@ -11,9 +11,8 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ShareVO {
-    private int share_idx;
+public class LikeVO {
+    private int like_idx;
     private String member_id;
-    private String name;
     private int study_idx;
 }

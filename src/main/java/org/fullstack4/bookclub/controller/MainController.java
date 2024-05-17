@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.fullstack4.bookclub.common.CommonUtil;
 import org.fullstack4.bookclub.common.FileUtil;
 import org.fullstack4.bookclub.dto.*;
+import org.fullstack4.bookclub.service.LikeServiceIf;
 import org.fullstack4.bookclub.service.MemberServiceIf;
 import org.fullstack4.bookclub.service.ShareServiceIf;
 import org.fullstack4.bookclub.service.StudyServiceIf;
@@ -33,6 +34,7 @@ public class MainController {
     private final MemberServiceIf memberService;
     private final StudyServiceIf studyService;
     private final ShareServiceIf shareService;
+    private final LikeServiceIf likeService;
     @GetMapping("/main")
     public void main(){
 
@@ -118,6 +120,7 @@ public class MainController {
 
         return "redirect:/main/studyview?study_idx=" + study_idx;
     }
+
     @GetMapping("/sharestudy")
     public void myShare(@Valid PageRequestDTO pageRequestDTO,
                         BindingResult bindingResult,
@@ -163,5 +166,30 @@ public class MainController {
 
         }
 
+    }
+    @GetMapping("/likeinsert")
+    public String insertLike(@RequestParam(name = "member_id")String member_id,
+                             @RequestParam(name = "study_idx")int study_idx){
+
+        LikeDTO likeDTO = LikeDTO.builder()
+                .study_idx(study_idx)
+                .member_id(member_id).build();
+        List<LikeDTO> list = likeService.list(study_idx);
+        int like_flag = 0;
+        if(list != null) {
+            for (LikeDTO like : list) {
+                if ((like.getMember_id().equals(likeDTO.getMember_id())) && (like.getStudy_idx() == likeDTO.getStudy_idx())) {
+                    like_flag = 1;
+                }
+            }
+            log.info(like_flag);
+        }
+        if(like_flag==1){
+            likeService.delete(likeDTO);
+        }
+        else {
+            likeService.regist(likeDTO);
+        }
+        return "redirect:/main/studyview?study_idx="+likeDTO.getStudy_idx();
     }
 }

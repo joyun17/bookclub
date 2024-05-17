@@ -3,22 +3,14 @@ package org.fullstack4.bookclub.service;
 
 
 
-import org.fullstack4.bookclub.domain.ShareVO;
-import org.fullstack4.bookclub.dto.PageRequestDTO;
-import org.fullstack4.bookclub.dto.PageResponseDTO;
-import org.fullstack4.bookclub.dto.ShareDTO;
-import org.fullstack4.bookclub.dto.StudyDTO;
+import org.fullstack4.bookclub.domain.LikeVO;
+import org.fullstack4.bookclub.dto.*;
 
 import java.util.List;
 
-public interface ShareServiceIf {
-    int regist(String member_id, int study_idx);
-    List<ShareDTO> shareList(int study_idx);
-    int ShareStudyTotalCount(PageRequestDTO requestDTO);
-    PageResponseDTO<StudyDTO> ShareStudyListByPage(PageRequestDTO pageRequestDTO);
-    int ShareStudyTotalCount2(PageRequestDTO requestDTO);
-    PageResponseDTO<StudyDTO> ShareStudyListByPage2(PageRequestDTO pageRequestDTO);
-    List<ShareDTO> listAll(String member_id);
-    int delete(int study_idx);
+public interface LikeServiceIf {
+    int regist(LikeDTO likeDTO);
+    List<LikeDTO> list(int study_idx);
+    int delete(LikeDTO likeDTO);
 
 }
