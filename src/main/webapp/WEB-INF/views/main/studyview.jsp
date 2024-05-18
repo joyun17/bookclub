@@ -96,7 +96,7 @@
                             <div id="shareDiv" class="col-5 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
                                 <c:forEach var="shareDTO" items="${shareDTOList}">
                                     <div>
-                                        <input type="text" style="width: 80%" class="shareValue" name="inputValues" value="${shareDTO.name}(${shareDTO.member_id})">
+                                        <input type="text" style="width: 80%" class="shareValue" name="inputValues" readonly value="${shareDTO.name}(${shareDTO.member_id})">
                                         <c:if test="${studyDTO.member_id == sessionScope.login_info.member_id}">
                                             <button onclick="deleteEl(this)">X</button>
                                         </c:if>
@@ -104,19 +104,22 @@
                                     </div>
                                 </c:forEach>
                             </div>
-                            <div class="col-2">
-                                <select id="shareList" onchange="updateInput()" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>
-                                    <c:forEach var="memberDTO" items="${memberDTOList}">
-                                        <c:if test="${memberDTO.member_id != sessionScope.login_info.member_id}">
-                                            <option>${memberDTO.name}(${memberDTO.member_id})</option>
-                                        </c:if>
+                            <c:if test="${studyDTO.member_id == sessionScope.login_info.member_id}">
+                                <div class="col-2">
+                                    <select id="shareList" onchange="updateInput()">
+                                        <c:forEach var="memberDTO" items="${memberDTOList}">
+                                            <c:if test="${memberDTO.member_id != sessionScope.login_info.member_id}">
+                                                <option>${memberDTO.name}(${memberDTO.member_id})</option>
+                                            </c:if>
 
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="col-2">
-                                <button class="btn btn-primary" id="shareBtn" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>공유하기</button>
-                            </div>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-primary" id="shareBtn" >공유하기</button>
+                                </div>
+                            </c:if>
+
 
                         </div>
                         <div class="row mb-3">

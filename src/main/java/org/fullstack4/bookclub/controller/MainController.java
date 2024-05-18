@@ -23,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +38,20 @@ public class MainController {
     private final ShareServiceIf shareService;
     private final LikeServiceIf likeService;
     @GetMapping("/main")
-    public void main(){
+    public void main(HttpServletRequest req,
+                     Model model){
+        HttpSession session = req.getSession();
+        MemberDTO dto = (MemberDTO)session.getAttribute("login_info");
+        String member_id = dto.getMember_id();
+        List<StudyDTO> dtoList = studyService.listAll(member_id);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        List<StudyDTO> dtoTodayList = studyService.listDay(member_id,formattedDate);
+        model.addAttribute("todayList",dtoTodayList);
+        model.addAttribute("list",dtoList);
+
+        log.info(dtoTodayList);
 
     }
     @GetMapping("/mystudy")
@@ -186,9 +201,11 @@ public class MainController {
         }
         if(like_flag==1){
             likeService.delete(likeDTO);
+            studyService.likeDown(study_idx);
         }
         else {
             likeService.regist(likeDTO);
+            studyService.likeUp(study_idx);
         }
         return "redirect:/main/studyview?study_idx="+likeDTO.getStudy_idx();
     }

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: user
@@ -9,23 +11,67 @@
 <html>
 <head>
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
-        .form-signin {
-            width: 800px;
-            margin: 0 auto;
-            padding-top: 150px;
-            padding-bottom: 150px;
-        }
-    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<style>
+    .special-date {
+        background-color: #ffcccb;
+        color: #000;
+    }
+</style>
 </head>
 <body class="text-center">
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <div class="container">
-<h1>메인입니다 :D</h1>
+
+    <div class="form-group">
+        <input type="text" class="form-control" id="datepicker" placeholder="날짜 선택">
+    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<!-- Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+    let dateList = [];
+    let reg_year;
+    let reg_month;
+    let reg_day;
+    <c:forEach items="${list}" var="list">
+    <c:set var="reg_date" value="${fn:split(list.reg_date,'-')}"/>
+        reg_year = ${reg_date[0]}
+        reg_month = Number(${reg_date[1]})-1;
+        reg_day = ${reg_date[2]}
+        dateList.push(new Date(reg_year,reg_month,reg_day))
+    </c:forEach>
+
+    $(document).ready(function() {
+        var specialDates = dateList;
+        console.log(specialDates)
+
+        $('#datepicker').datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            beforeShowDay: function(date) {
+                for (var i = 0; i < specialDates.length; i++) {
+                    if (date.getFullYear() === specialDates[i].getFullYear() &&
+                        date.getMonth() === specialDates[i].getMonth() &&
+                        date.getDate() === specialDates[i].getDate()) {
+                        return {
+                            classes: 'special-date',
+                            tooltip: 'Special Date'
+                        };
+                    }
+                }
+                return;
+            }
+        });
+    });
+</script>
 </body>
 </html>
