@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: USER
@@ -24,13 +26,13 @@
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
 
                     <!--Form -->
-                    <form method="post" id="registFrm" action="/main/studyregist" enctype="multipart/form-data">
-                        <input type="hidden" name="member_id" value="${sessionScope.login_info.member_id}">
+                    <form method="post" id="modifyFrm" action="/main/studymodify">
+                        <input type="hidden" name="study_idx" value="${studyDTO.study_idx}">
                         <div class="row mb-3">
                             <label for="title" class="col-md-4 col-lg-2 col-form-label">제목</label>
                             <div class="col-md-8 col-lg-9">
                                 <input name="title" type="text" class="form-control" id="title"
-                                       value="" placeholder="2~60자 사이로 입력해주세요.">
+                                       value="${studyDTO.title}" placeholder="2~60자 사이로 입력해주세요.">
                                 <div class="invalid-feedback" id="err_title" style="display: none">
                                     2~60자 사이로 입력해주세요.
                                 </div>
@@ -39,7 +41,7 @@
                         <div class="row mb-3">
                             <label for="contents" class="col-md-4 col-lg-2 col-form-label">내용</label>
                             <div class="col-md-8 col-lg-10">
-                                <textarea id="contents" class="form-control" style="max-width: 940px" rows="5" name="contents" ></textarea>
+                                <textarea id="contents" class="form-control" style="max-width: 940px" rows="5" name="contents" >${studyDTO.contents}</textarea>
                                 <div class="invalid-feedback" id="err_contents" style="display: none">
                                     20자 이상 입력해주세요.
                                 </div>
@@ -55,17 +57,17 @@
                         <div class="row mb-3">
                             <label class="col-md-4 col-lg-2 col-form-label">학습 노출 여부</label>
                             <div class="col-md-8 col-lg-9">
-                                <input type="radio" id="status_y" name="show_status" value="Y"><label for="status_y"> 노출</label>
+                                <input type="radio" id="status_y" name="show_status" <c:if test="${studyDTO.show_status=='Y'}">checked</c:if> value="Y"><label for="status_y"> 노출</label>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" id="status_n" name="show_status" value="N"><label for="status_n"> 노출 안함</label>
+                                <input type="radio" id="status_n" name="show_status" <c:if test="${studyDTO.show_status=='N'}">checked</c:if> value="N"><label for="status_n"> 노출 안함</label>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label  class="col-md-4 col-lg-2 col-form-label">학습 노출 기간</label>
                             <div class="col-md-8 col-lg-9">
-                                <input type="date" name="start_date">
+                                <input type="date" name="start_date" value="${studyDTO.start_date}">
                                 ~
-                                <input type="date" name="end_date">
+                                <input type="date" name="end_date" value="${studyDTO.end_date}">
                             </div>
                         </div>
                         <div class="row mb-3" id="contentsBox">
@@ -77,16 +79,22 @@
                                 </div>
                                 <input type="hidden" id="category" name="category" value="">
                             </div>
+                            <c:set var="cate" value="${fn:split(studyDTO.category,'|')}"/>
+                            <c:forEach var="cates" items="${cate}">
                             <div class="col-lg-2"></div>
                             <div class="col-md-8 col-lg-10 row">
-                                <div class="col-9">
-                                    <input type="text" class="form-control contentsList" value="">
-                                </div>
-                                <div class="col-3">
-                                    <button type="button" class="btn btn-danger me-2 contentsDelBtn" onclick="delContents(this)">삭제</button>
-                                </div>
+
+                                    <div class="col-9">
+                                        <input type="text" class="form-control contentsList" value="${cates}">
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn btn-danger me-2 contentsDelBtn" onclick="delContents(this)">삭제</button>
+                                    </div>
+                                <br><br>
                             </div>
-                            <br><br>
+
+                            </c:forEach>
+
                         </div>
 
                         <div class="row mb-3" id="tagsBox">
@@ -98,22 +106,27 @@
                                 </div>
                                 <input type="hidden" id="tags" name="tags" value="">
                             </div>
+                            <c:set var="tag" value="${fn:split(studyDTO.tags,'|')}"/>
+                            <c:forEach var="tags" items="${tag}">
                             <div class="col-lg-2"></div>
                             <div class="col-md-8 col-lg-10 row">
                                 <div class="col-9">
-                                    <input type="text" class="form-control tagsList" value="">
+                                    <input type="text" class="form-control tagsList" value="${tags}">
                                 </div>
                                 <div class="col-3">
                                     <button type="button" class="btn btn-danger me-2 tagsDelBtn" onclick="deltags(this)">삭제</button>
                                 </div>
+                                <br><br>
                             </div>
-                            <br><br>
+
+                            </c:forEach>
+
                         </div>
 
 
                         <div class="d-flex text-center mt-5 justify-content-end">
-                            <button type="submit" id="registBtn" class="btn btn-primary me-2">등록</button>
-                            <button type="button" class="btn btn-secondary" onclick="location.href='/main/mystudy'">취소</button>
+                            <button type="submit" id="modifyBtn" class="btn btn-primary me-2">수정</button>
+                            <button type="button" class="btn btn-secondary" onclick="location.href='/main/studyview?study_idx=${studyDTO.study_idx}'">취소</button>
                         </div>
 
                     </form><!-- EndForm -->
@@ -128,15 +141,16 @@
     let contentsAddBtn = document.getElementById("contentsAddBtn");
     let contentsBox = document.getElementById("contentsBox");
     let contentsDelBtn = document.getElementsByClassName("contentsDelBtn");
-    let registBtn = document.getElementById("registBtn");
+    let modifyBtn = document.getElementById("modifyBtn");
 
     let tagsAddBtn = document.getElementById("tagsAddBtn");
     let tagsBox = document.getElementById("tagsBox");
     let tagsDelBtn = document.getElementsByClassName("tagsDelBtn");
     let id=1;
-    let categoryCount = 1;
-    let tagsCount = 1;
-    registBtn.addEventListener("click", function(e){
+    let categoryCount = document.getElementsByClassName("contentsList").length;
+    let tagsCount = document.getElementsByClassName("tagsList").length;
+    console.log(tagsCount)
+    modifyBtn.addEventListener("click", function(e){
         e.preventDefault();
         let contentsStr = "";
 
@@ -160,7 +174,7 @@
             document.getElementById("tags").value = tagsStr.substring(0, tagsStr.length - 1);
         }
 
-        document.getElementById("registFrm").submit();
+        document.getElementById("modifyFrm").submit();
     });
     function delContents(element){
         let div = element.parentNode.parentNode.parentNode;

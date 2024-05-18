@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: USER
@@ -16,6 +17,9 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <script>
+    function deleteEl(element){
+        element.parentNode.remove();
+    }
     function updateInput() {
         let select = document.getElementById("shareList");
         let selectedValue = select.options[select.selectedIndex].value;
@@ -28,17 +32,30 @@
         }
 
         if(flag == 0) {
+            let divElement = document.createElement("div");
             let inputElement = document.createElement("input");
-            inputElement.type = "text";
-            inputElement.readOnly = true;
-            inputElement.style.width = "100%";
-            inputElement.classList.add("shareValue");
-            inputElement.value = selectedValue;
-            inputElement.name = "inputValues";
-
-            shareDiv.appendChild(inputElement);
+            let btnElement = document.createElement("button");
+            let innerText = "";
+            innerText += '<div><input type="text" readonly style="width: 80%;" class="shareValue" value="' + selectedValue + '"name="inputValues"><button onclick="deleteEl(this)">X</button></div>'
+            // btnElement.innerText = "X";
+            // btnElement.onclick = deleteEl;
+            // btnElement.addEventListener("click",deleteEl(this));
+            //
+            // inputElement.type = "text";
+            // inputElement.readOnly = true;
+            // inputElement.style.width = "80%";
+            // inputElement.classList.add("shareValue");
+            // inputElement.value = selectedValue;
+            // inputElement.name = "inputValues";
+            // divElement.append(inputElement);
+            // divElement.append(btnElement);
+            document.getElementById("shareDiv").innerHTML += innerText;
+            //
+            // shareDiv.appendChild(divElement);
         }
+
     }
+
 </script>
     <div class="container">
         <div class="card">
@@ -78,11 +95,17 @@
 
                             <div id="shareDiv" class="col-5 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
                                 <c:forEach var="shareDTO" items="${shareDTOList}">
-                                    <input type="text" style="width: 100%" class="shareValue" name="inputValues" value="${shareDTO.name}(${shareDTO.member_id})">
+                                    <div>
+                                        <input type="text" style="width: 80%" class="shareValue" name="inputValues" value="${shareDTO.name}(${shareDTO.member_id})">
+                                        <c:if test="${studyDTO.member_id == sessionScope.login_info.member_id}">
+                                            <button onclick="deleteEl(this)">X</button>
+                                        </c:if>
+
+                                    </div>
                                 </c:forEach>
                             </div>
                             <div class="col-2">
-                                <select id="shareList" onchange="updateInput()">
+                                <select id="shareList" onchange="updateInput()" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>
                                     <c:forEach var="memberDTO" items="${memberDTOList}">
                                         <c:if test="${memberDTO.member_id != sessionScope.login_info.member_id}">
                                             <option>${memberDTO.name}(${memberDTO.member_id})</option>
@@ -92,31 +115,54 @@
                                 </select>
                             </div>
                             <div class="col-2">
-                                <button class="btn btn-primary" id="shareBtn">공유하기</button>
+                                <button class="btn btn-primary" id="shareBtn" <c:if test="${studyDTO.member_id != sessionScope.login_info.member_id}">disabled</c:if>>공유하기</button>
                             </div>
 
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-lg-2 col-form-label label">이미지</label>
+                            <div class="col-md-8 col-lg-9 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
+                                <c:if test="${studyDTO.img_path !=null}">
+                                    <img src="/resources/upload/study/${studyDTO.img_path}" alt="" width="100%" height="100%" >
+                                </c:if>
+                                <c:if test="${studyDTO.img_path == null}">
+                                    등록한 이미지가 없습니다.
+                                </c:if>
+                            </div>
                         </div>
 
                         <div class="row mt-5">
                             <div class="col-4">
                                 <label class="col-md-4 col-lg-2 col-form-label label">분야</label>
 
-                                <span>분야1, 분야2</span>
+                                <c:set var="category" value="${fn:split(studyDTO.category,'|')}"/>
+                                <c:forEach var="cate" items="${category}" varStatus="i">
+                                    <c:if test="${!i.last}">
+                                        <span>${cate}, </span>
+                                    </c:if>
+                                    <c:if test="${i.last}">
+                                        <span>${cate}</span>
+                                    </c:if>
+                                </c:forEach>
                             </div>
                             <div class="col-4">
                                 <label class="col-md-4 col-lg-2 col-form-label label">해시태그</label>
-                                <span>태그1, 태그2</span>
+                                <c:set var="tags" value="${fn:split(studyDTO.tags,'|')}"/>
+                                <c:forEach var="tag" items="${tags}" varStatus="i">
+                                    <c:if test="${!i.last}">
+                                        <span>#${tag}, </span>
+                                    </c:if>
+                                    <c:if test="${i.last}">
+                                        <span>#${tag}</span>
+                                    </c:if>
+
+                                </c:forEach>
                             </div>
                             <div class="col-4">
-            <%--                    <div class="text-center d-flex justify-content-end">--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">목록</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">등록</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">수정</button>--%>
-            <%--                        &nbsp;&nbsp;--%>
-            <%--                        <button type="button" class="btn btn-outline-success" onclick="">삭제</button>--%>
-            <%--                    </div>--%>
+                                <button type="button" id="likeBtn" onclick="location.href='/main/likeinsert?study_idx=${studyDTO.study_idx}&member_id=${sessionScope.login_info.member_id}'" class="btn btn-danger">
+                                    좋아요!
+                                </button>
+                                <span>${studyDTO.like}</span>
                             </div>
                         </div>
                         <div class="row mt-5">
@@ -130,9 +176,11 @@
                                     &nbsp;&nbsp;
                                     <button type="button" class="btn btn-outline-success" onclick="">등록</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-outline-success" onclick="">수정</button>
-                                    &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-outline-success" onclick="">삭제</button>
+                                    <c:if test="${sessionScope.login_info.member_id == studyDTO.member_id}">
+                                        <button type="button" class="btn btn-outline-success" onclick="location.href='/main/studymodify?study_idx=${studyDTO.study_idx}'">수정</button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="btn btn-outline-success" onclick="">삭제</button>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -150,5 +198,9 @@
        this.form.submit();
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
 </body>
 </html>

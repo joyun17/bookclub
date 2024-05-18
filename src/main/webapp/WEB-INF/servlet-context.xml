@@ -42,5 +42,5 @@
 
 
 
-<!--    <resources mapping="/resources/**" location="/resources/"></resources>-->
+    <resources mapping="/resources/**" location="/resources/"></resources>
 </beans:beans>

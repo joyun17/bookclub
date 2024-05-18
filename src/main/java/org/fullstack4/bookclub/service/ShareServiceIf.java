@@ -16,6 +16,9 @@ public interface ShareServiceIf {
     List<ShareDTO> shareList(int study_idx);
     int ShareStudyTotalCount(PageRequestDTO requestDTO);
     PageResponseDTO<StudyDTO> ShareStudyListByPage(PageRequestDTO pageRequestDTO);
+    int ShareStudyTotalCount2(PageRequestDTO requestDTO);
+    PageResponseDTO<StudyDTO> ShareStudyListByPage2(PageRequestDTO pageRequestDTO);
     List<ShareDTO> listAll(String member_id);
+    int delete(int study_idx);
 
 }

@@ -27,6 +27,7 @@ public class StudyVO {
     private LocalDate start_date;
     private LocalDate end_date;
     private LocalDate reg_date;
-
+    private String img_path;
+    private String img_org_name;
 
 }

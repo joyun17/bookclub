@@ -58,4 +58,10 @@ public class StudyServiceImpl implements StudyServiceIf{
         StudyDTO studyDTO = modelMapper.map(studyVO, StudyDTO.class);
         return studyDTO;
     }
+
+    @Override
+    public int update(StudyDTO studyDTO) {
+        StudyVO studyVO = modelMapper.map(studyDTO, StudyVO.class);
+        return studyMapper.update(studyVO);
+    }
 }

@@ -38,7 +38,7 @@ public class ShareServiceImpl implements ShareServiceIf{
 
     @Override
     public int ShareStudyTotalCount(PageRequestDTO requestDTO) {
-        return 0;
+        return shareMapper.shareStudyTotalCount(requestDTO);
     }
 
     @Override
@@ -60,10 +60,38 @@ public class ShareServiceImpl implements ShareServiceIf{
     }
 
     @Override
+    public int ShareStudyTotalCount2(PageRequestDTO requestDTO) {
+        return shareMapper.shareStudyTotalCount2(requestDTO);
+    }
+
+    @Override
+    public PageResponseDTO<StudyDTO> ShareStudyListByPage2(PageRequestDTO pageRequestDTO) {
+        List<StudyVO> voList = shareMapper.shareStudyListByPage2(pageRequestDTO);
+        List<StudyDTO> dtoList = voList.stream()
+                .map(vo->modelMapper.map(vo,StudyDTO.class))
+                .collect(Collectors.toList());
+        int total_count = shareMapper.shareStudyTotalCount2(pageRequestDTO);
+
+        PageResponseDTO<StudyDTO> responseDTO = PageResponseDTO.<StudyDTO>withAll()
+                .requestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total_count(total_count)
+                .build();
+
+        return responseDTO;
+    }
+
+    @Override
     public List<ShareDTO> listAll(String member_id) {
         List<ShareDTO> shareDTOList = shareMapper.listAll(member_id).stream()
                 .map(shareVO -> modelMapper.map(shareVO, ShareDTO.class))
                 .collect(Collectors.toList());
         return shareDTOList;
+    }
+
+    @Override
+    public int delete(int study_idx) {
+        int result = shareMapper.delete(study_idx);
+        return result;
     }
 }

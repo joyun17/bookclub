@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/schema/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fullstack4.bookclub.mapper.LikeMapper">
+    <insert id="regist">
+        INSERT INTO tbl_like(study_idx, member_id)
+        VALUES(#{study_idx}, #{member_id})
+    </insert>
+    <select id="list" resultType="org.fullstack4.bookclub.domain.LikeVO">
+        SELECT like_idx, member_id, study_idx
+        FROM tbl_like
+        WHERE study_idx = #{study_idx}
+    </select>
+    <delete id="delete">
+        DELETE
+        FROM tbl_like
+        WHERE member_id = #{member_id}
+        AND study_idx = #{study_idx}
+    </delete>
+
+</mapper>

@@ -14,6 +14,9 @@ public interface ShareMapper {
 
     int shareStudyTotalCount(PageRequestDTO requestDTO);
     List<StudyVO> shareStudyListByPage(PageRequestDTO requestDTO);
+    int shareStudyTotalCount2(PageRequestDTO requestDTO);
+    List<StudyVO> shareStudyListByPage2(PageRequestDTO requestDTO);
     List<ShareVO> listAll(String member_id);
+    int delete(int study_idx);
 
 }
