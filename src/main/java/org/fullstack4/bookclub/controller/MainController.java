@@ -13,10 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -54,6 +51,13 @@ public class MainController {
         log.info(dtoTodayList);
 
     }
+    @GetMapping("/studyDate")
+    @ResponseBody
+    public List<StudyDTO> studyDate(@RequestParam("date")String date, @RequestParam("member_id")String member_id, Model model){
+        List<StudyDTO> studyList = studyService.listDay(member_id, date);
+        model.addAttribute("studyList",studyList);
+        return studyList;
+    }
     @GetMapping("/mystudy")
     public void myStudy(@Valid PageRequestDTO pageRequestDTO,
                         BindingResult bindingResult,
@@ -69,7 +73,29 @@ public class MainController {
     }
     @GetMapping("/studyview")
     public void studyview(@RequestParam(name = "study_idx") int study_idx,
+                          HttpServletRequest req,
+                          RedirectAttributes redirectAttributes,
                           Model model){
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login_info");
+        String member_id = memberDTO.getMember_id();
+        List<LikeDTO> list = likeService.list(study_idx);
+        int like_flag = 0;
+        if(list != null) {
+            for (LikeDTO like : list) {
+                if ((like.getMember_id().equals(member_id)) && (like.getStudy_idx() == study_idx)) {
+                    like_flag = 1;
+                }
+            }
+            log.info(like_flag);
+        }
+        if(like_flag==1){
+            model.addAttribute("like_Y",like_flag);
+        }
+        else {
+            model.addAttribute("like_N",like_flag);
+        }
+
         StudyDTO studyDTO = studyService.view(study_idx);
         List<MemberDTO> memberDTOList = memberService.memberList();
         List<ShareDTO> shareDTOList = shareService.shareList(study_idx);

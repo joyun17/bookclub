@@ -28,8 +28,80 @@
     <div class="form-group">
         <input type="text" class="form-control" id="datepicker" placeholder="날짜 선택">
     </div>
-</div>
 
+<div id="postsContainer">
+    <c:forEach var="studyDTO" items="${todayList}">
+    <div class="card">
+        <div class="card-body pt-3">
+            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                <div class="row mb-3">
+                    <label for="title" class="col-md-4 col-lg-2 col-form-label label">제목</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="title" type="text" class="form-control-plaintext" id="title"
+                               value="${studyDTO.title}" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="reg_date" class="col-md-4 col-lg-2 col-form-label label">작성일</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="reg_date" type="text" class="form-control-plaintext" id="reg_date"
+                               value="${studyDTO.reg_date}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-2 col-form-label label">내용</label>
+                    <div class="col-md-8 col-lg-9 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
+                        <textarea readonly style="max-width: 940px; width: 100%; border: 0; resize:none" rows="5" name="contents" >${studyDTO.contents}</textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-2 col-form-label label">이미지</label>
+                    <div class="col-md-8 col-lg-9 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
+                        <c:if test="${studyDTO.img_path !=null}">
+                            <img src="/resources/upload/study/${studyDTO.img_path}" alt="" width="100%" height="100%" >
+                        </c:if>
+                        <c:if test="${studyDTO.img_path == null}">
+                            등록한 이미지가 없습니다.
+                        </c:if>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-4">
+                        <label class="col-md-4 col-lg-2 col-form-label label">분야</label>
+
+                        <c:set var="category" value="${fn:split(studyDTO.category,'|')}"/>
+                        <c:forEach var="cate" items="${category}" varStatus="i">
+                            <c:if test="${!i.last}">
+                                <span>${cate}, </span>
+                            </c:if>
+                            <c:if test="${i.last}">
+                                <span>${cate}</span>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <div class="col-4">
+                        <label class="col-md-4 col-lg-2 col-form-label label">해시태그</label>
+                        <c:set var="tags" value="${fn:split(studyDTO.tags,'|')}"/>
+                        <c:forEach var="tag" items="${tags}" varStatus="i">
+                            <c:if test="${!i.last}">
+                                <span>#${tag}, </span>
+                            </c:if>
+                            <c:if test="${i.last}">
+                                <span>#${tag}</span>
+                            </c:if>
+
+                        </c:forEach>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </c:forEach>
+</div>
+</div>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <!-- Bootstrap JS -->
@@ -70,8 +142,99 @@
                 }
                 return;
             }
+        }).on('changeDate', function(e){
+            var selectedDate = e.format('yyyy-mm-dd');
+            studyForDate(selectedDate);
         });
     });
+    function studyForDate(date){
+        $.ajax({
+            url:'/main/studyDate',
+            type: 'GET',
+            data: {
+              date : date,
+              member_id : "${sessionScope.login_info.member_id}"
+            },
+            success:function (response){
+                renderPosts(response);
+            },
+            error: function(error){
+                console.log('error');
+            }
+        })
+    }
+    function renderPosts(posts) {
+        var postsContainer = $('#postsContainer');
+        postsContainer.empty();
+        if (posts.length === 0) {
+            postsContainer.append('<p>작성한 게시글이 없습니다.</p>');
+        } else {
+            posts.forEach(function(post) {
+                var postElement = `<div class="card">
+        <div class="card-body pt-3">
+            <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                <div class="row mb-3">
+                    <label for="title" class="col-md-4 col-lg-2 col-form-label label">제목</label>
+                    <div class="col-md-8 col-lg-9">
+                        <input name="title" type="text" class="form-control-plaintext" id="title"
+                               value="`+post.title+`" readonly>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-2 col-form-label label">내용</label>
+                    <div class="col-md-8 col-lg-9 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
+                        <textarea readonly style="max-width: 940px; width: 100%; border: 0; resize:none" rows="5" name="contents" >`+post.contents+`</textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-4 col-lg-2 col-form-label label">이미지</label>
+                    <div class="col-md-8 col-lg-9 overflow-auto mx-2 border border-gray rounded p-2" style="max-height: 500px;">
+                        <c:if test="${post.img_path !=null}">
+                            <img src="/resources/upload/study/`+post.img_path +`" alt="" width="100%" height="100%" >
+                        </c:if>
+                        <c:if test="${post.img_path == null}">
+                            등록한 이미지가 없습니다.
+                        </c:if>
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-4">
+                        <label class="col-md-4 col-lg-2 col-form-label label">분야</label>
+
+                        <c:set var="category" value="${fn:split(post.category,'|')}"/>
+                        <c:forEach var="cate" items="${category}" varStatus="i">
+                            <c:if test="${!i.last}">
+                                <span>${cate}, </span>
+                            </c:if>
+                            <c:if test="${i.last}">
+                                <span>${cate}</span>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                    <div class="col-4">
+                        <label class="col-md-4 col-lg-2 col-form-label label">해시태그</label>
+                        <c:set var="tags" value="${fn:split(post.tags,'|')}"/>
+                        <c:forEach var="tag" items="${tags}" varStatus="i">
+                            <c:if test="${!i.last}">
+                                <span>#${tag}, </span>
+                            </c:if>
+                            <c:if test="${i.last}">
+                                <span>#${tag}</span>
+                            </c:if>
+
+                        </c:forEach>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>`;
+                postsContainer.append(postElement);
+            });
+        }
+    }
 </script>
 </body>
 </html>

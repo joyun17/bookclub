@@ -162,7 +162,8 @@
                                 </c:forEach>
                             </div>
                             <div class="col-4">
-                                <button type="button" id="likeBtn" onclick="location.href='/main/likeinsert?study_idx=${studyDTO.study_idx}&member_id=${sessionScope.login_info.member_id}'" class="btn btn-danger">
+                                <button type="button" id="likeBtn" onclick="location.href='/main/likeinsert?study_idx=${studyDTO.study_idx}&member_id=${sessionScope.login_info.member_id}'"
+                                        class="btn btn-<c:if test="${like_Y ==null}">light</c:if><c:if test="${like_N ==null}">danger</c:if>">
                                     좋아요!
                                 </button>
                                 <span>${studyDTO.like}</span>
