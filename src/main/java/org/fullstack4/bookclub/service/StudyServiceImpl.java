@@ -64,4 +64,32 @@ public class StudyServiceImpl implements StudyServiceIf{
         StudyVO studyVO = modelMapper.map(studyDTO, StudyVO.class);
         return studyMapper.update(studyVO);
     }
+
+    @Override
+    public int likeUp(int study_idx) {
+        return studyMapper.likeUp(study_idx);
+    }
+
+    @Override
+    public int likeDown(int study_idx) {
+        return studyMapper.likeDown(study_idx);
+    }
+
+    @Override
+    public List<StudyDTO> listAll(String member_id) {
+        List<StudyVO> voList = studyMapper.listAll(member_id);
+        List<StudyDTO> dtoList = voList.stream()
+                .map(vo->modelMapper.map(vo,StudyDTO.class))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
+
+    @Override
+    public List<StudyDTO> listDay(String member_id, String reg_date) {
+        List<StudyVO> voList = studyMapper.listDay(member_id, reg_date);
+        List<StudyDTO> dtoList = voList.stream()
+                .map(vo->modelMapper.map(vo,StudyDTO.class))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
 }

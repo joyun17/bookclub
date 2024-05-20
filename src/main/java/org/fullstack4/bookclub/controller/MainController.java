@@ -13,16 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +35,28 @@ public class MainController {
     private final ShareServiceIf shareService;
     private final LikeServiceIf likeService;
     @GetMapping("/main")
-    public void main(){
+    public void main(HttpServletRequest req,
+                     Model model){
+        HttpSession session = req.getSession();
+        MemberDTO dto = (MemberDTO)session.getAttribute("login_info");
+        String member_id = dto.getMember_id();
+        List<StudyDTO> dtoList = studyService.listAll(member_id);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        List<StudyDTO> dtoTodayList = studyService.listDay(member_id,formattedDate);
+        model.addAttribute("todayList",dtoTodayList);
+        model.addAttribute("list",dtoList);
 
+        log.info(dtoTodayList);
+
+    }
+    @GetMapping("/studyDate")
+    @ResponseBody
+    public List<StudyDTO> studyDate(@RequestParam("date")String date, @RequestParam("member_id")String member_id, Model model){
+        List<StudyDTO> studyList = studyService.listDay(member_id, date);
+        model.addAttribute("studyList",studyList);
+        return studyList;
     }
     @GetMapping("/mystudy")
     public void myStudy(@Valid PageRequestDTO pageRequestDTO,
@@ -54,7 +73,29 @@ public class MainController {
     }
     @GetMapping("/studyview")
     public void studyview(@RequestParam(name = "study_idx") int study_idx,
+                          HttpServletRequest req,
+                          RedirectAttributes redirectAttributes,
                           Model model){
+        HttpSession session = req.getSession();
+        MemberDTO memberDTO = (MemberDTO) session.getAttribute("login_info");
+        String member_id = memberDTO.getMember_id();
+        List<LikeDTO> list = likeService.list(study_idx);
+        int like_flag = 0;
+        if(list != null) {
+            for (LikeDTO like : list) {
+                if ((like.getMember_id().equals(member_id)) && (like.getStudy_idx() == study_idx)) {
+                    like_flag = 1;
+                }
+            }
+            log.info(like_flag);
+        }
+        if(like_flag==1){
+            model.addAttribute("like_Y",like_flag);
+        }
+        else {
+            model.addAttribute("like_N",like_flag);
+        }
+
         StudyDTO studyDTO = studyService.view(study_idx);
         List<MemberDTO> memberDTOList = memberService.memberList();
         List<ShareDTO> shareDTOList = shareService.shareList(study_idx);
@@ -186,9 +227,11 @@ public class MainController {
         }
         if(like_flag==1){
             likeService.delete(likeDTO);
+            studyService.likeDown(study_idx);
         }
         else {
             likeService.regist(likeDTO);
+            studyService.likeUp(study_idx);
         }
         return "redirect:/main/studyview?study_idx="+likeDTO.getStudy_idx();
     }

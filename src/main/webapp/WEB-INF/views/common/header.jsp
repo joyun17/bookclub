@@ -30,7 +30,7 @@
                         <a class="nav-link active" aria-current="page" href="/member/mypage?member_id=${sessionScope.login_info.member_id}">마이페이지</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">오늘의 학습</a>
+                        <a class="nav-link active" aria-current="page" href="/main/main">오늘의 학습</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/main/mystudy">나의 학습</a>

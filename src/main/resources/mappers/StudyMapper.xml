@@ -70,5 +70,26 @@
             tags = #{tags}
         WHERE study_idx = #{study_idx}
     </update>
+    <select id="listAll" resultType="org.fullstack4.bookclub.domain.StudyVO">
+        SELECT study_idx, title, contents, reg_date, show_status, `like`, tags, category, member_id, start_date, end_date
+        FROM tbl_study
+        WHERE member_id = #{member_id}
+    </select>
+    <update id="likeUp">
+        UPDATE tbl_study
+        SET `like` = `like` + 1
+        WHERE study_idx = #{study_idx}
+    </update>
+    <update id="likeDown">
+        UPDATE tbl_study
+        SET `like` = `like` - 1
+        WHERE study_idx = #{study_idx}
+    </update>
+    <select id="listDay" resultType="org.fullstack4.bookclub.domain.StudyVO">
+        SELECT study_idx, title, contents, reg_date, show_status, `like`, tags, category, member_id, start_date, end_date
+        FROM tbl_study
+        WHERE member_id = #{member_id}
+        AND DATE_FORMAT(reg_date, '%Y-%m-%d') = #{reg_date}
+    </select>
 
 </mapper>
