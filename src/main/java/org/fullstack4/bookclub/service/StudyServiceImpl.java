@@ -76,6 +76,11 @@ public class StudyServiceImpl implements StudyServiceIf{
     }
 
     @Override
+    public int delete(int study_idx) {
+        return studyMapper.delete(study_idx);
+    }
+
+    @Override
     public List<StudyDTO> listAll(String member_id) {
         List<StudyVO> voList = studyMapper.listAll(member_id);
         List<StudyDTO> dtoList = voList.stream()

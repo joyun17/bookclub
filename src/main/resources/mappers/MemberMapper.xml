@@ -9,12 +9,12 @@
         VALUES(#{member_id}, #{password}, #{phone}, #{email}, #{name})
     </insert>
     <select id="login" resultType="org.fullstack4.bookclub.domain.MemberVO">
-        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name, password_r
         FROM tbl_member
         WHERE member_id = #{member_id}
     </select>
     <select id="view" resultType="org.fullstack4.bookclub.domain.MemberVO">
-        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name, password_r
         FROM tbl_member
         WHERE member_id = #{member_id}
     </select>
@@ -44,8 +44,19 @@
         WHERE member_id = #{member_id}
     </update>
     <select id="memberList" resultType="org.fullstack4.bookclub.domain.MemberVO">
-        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name, password_r
         FROM tbl_member
     </select>
+    <select id="searchMemberList" resultType="org.fullstack4.bookclub.domain.MemberVO">
+        SELECT member_id, password, phone, email, reg_date, recent_date, status, fail_count, name, password_r
+        FROM tbl_member
+        WHERE member_id LIKE CONCAT('%', #{search_word}, '%')
+        OR name LIKE CONCAT('%', #{search_word}, '%')
+    </select>
+    <update id="pwdChange">
+        UPDATE tbl_member
+        SET password_r = 'Y'
+        WHERE member_id = #{member_id}
+    </update>
 
 </mapper>

@@ -85,8 +85,13 @@
         SET `like` = `like` - 1
         WHERE study_idx = #{study_idx}
     </update>
+    <delete id="delete">
+        DELETE
+        FROM tbl_study
+        WHERE study_idx = #{study_idx}
+    </delete>
     <select id="listDay" resultType="org.fullstack4.bookclub.domain.StudyVO">
-        SELECT study_idx, title, contents, reg_date, show_status, `like`, tags, category, member_id, start_date, end_date
+        SELECT study_idx, title, contents, reg_date, show_status, `like`, tags, category, member_id, start_date, end_date, img_path
         FROM tbl_study
         WHERE member_id = #{member_id}
         AND DATE_FORMAT(reg_date, '%Y-%m-%d') = #{reg_date}

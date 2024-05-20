@@ -27,4 +27,5 @@ public class MemberDTO {
     private LocalDateTime recent_date;
     private String status;
     private int fail_count;
+    private String password_r;
 }

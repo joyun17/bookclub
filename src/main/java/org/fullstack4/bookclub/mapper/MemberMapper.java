@@ -15,4 +15,6 @@ public interface MemberMapper {
     void update_pwd(@Param("member_id")String member_id, @Param("pwd")String pwd);
     void reset_fail(String member_id);
     List<MemberVO> memberList();
+    List<MemberVO> searchMemberList(String search_word);
+    int pwdChange(String member_id);
 }

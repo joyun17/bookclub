@@ -14,6 +14,7 @@ public interface StudyMapper {
     int update(StudyVO studyVO);
     int likeUp(int study_idx);
     int likeDown(int study_idx);
+    int delete(int study_idx);
     List<StudyVO> listAll(String member_id);
     List<StudyVO> listDay(@Param("member_id")String member_id, @Param("reg_date")String reg_date);
 }

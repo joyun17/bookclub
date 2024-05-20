@@ -15,4 +15,6 @@ public interface MemberServiceIf {
     void update_pwd(String member_id, String pwd);
     void reset_fail(String member_id);
     List<MemberDTO> memberList();
+    List<MemberDTO> searchMemberList(String search_word);
+    int pwdChange(String member_id);
 }

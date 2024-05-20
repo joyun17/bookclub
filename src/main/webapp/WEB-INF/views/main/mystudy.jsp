@@ -34,7 +34,7 @@
                         <div style="margin-top:15px;margin-right:10px">
                             <input type="radio" class="search_type" name="type" value="0" <c:if test="${responseDTO.type == '0'}"> checked</c:if>>전체
                             <input type="radio" class="search_type" name="type" value="1" <c:if test="${responseDTO.type == '1'}"> checked</c:if>>제목
-                            <input type="radio" class="search_type" name="type" value="2" <c:if test="${responseDTO.type == '2'}"> checked</c:if>>작성자
+                            <input type="radio" class="search_type" name="type" value="2" <c:if test="${responseDTO.type == '2'}"> checked</c:if>>내용
                         </div>
                         <input type="text" id="search_word" name="search_word" class="form-control" style="width: 850px;margin-right:10px;height: 50px" value="${responseDTO.search_word}">
                         <div class="input-group mb-3" style="width: 210px; margin-top: 5px">

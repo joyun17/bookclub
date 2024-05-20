@@ -74,4 +74,17 @@ public class MemberServiceImpl implements MemberServiceIf{
                 .collect(Collectors.toList());
         return memberDTOList;
     }
+
+    @Override
+    public List<MemberDTO> searchMemberList(String search_word) {
+        List<MemberDTO> memberDTOList = memberMapper.searchMemberList(search_word).stream()
+                .map(memberVO -> modelMapper.map(memberVO,MemberDTO.class))
+                .collect(Collectors.toList());
+        return memberDTOList;
+    }
+
+    @Override
+    public int pwdChange(String member_id) {
+        return memberMapper.pwdChange(member_id);
+    }
 }

@@ -57,17 +57,17 @@
                         <div class="row mb-3">
                             <label class="col-md-4 col-lg-2 col-form-label">학습 노출 여부</label>
                             <div class="col-md-8 col-lg-9">
-                                <input type="radio" id="status_y" name="show_status" <c:if test="${studyDTO.show_status=='Y'}">checked</c:if> value="Y"><label for="status_y"> 노출</label>
+                                <input type="radio" id="status_y" name="show_status" onclick="radioChange(this)" <c:if test="${studyDTO.show_status=='Y'}">checked</c:if> value="Y"><label for="status_y"> 노출</label>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" id="status_n" name="show_status" <c:if test="${studyDTO.show_status=='N'}">checked</c:if> value="N"><label for="status_n"> 노출 안함</label>
+                                <input type="radio" id="status_n" name="show_status" onclick="radioChange(this)" <c:if test="${studyDTO.show_status=='N'}">checked</c:if> value="N"><label for="status_n"> 노출 안함</label>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label  class="col-md-4 col-lg-2 col-form-label">학습 노출 기간</label>
                             <div class="col-md-8 col-lg-9">
-                                <input type="date" name="start_date" value="${studyDTO.start_date}">
+                                <input type="date" name="start_date" id="start_date" value="${studyDTO.start_date}" <c:if test="${studyDTO.show_status=='N'}">disabled</c:if>>
                                 ~
-                                <input type="date" name="end_date" value="${studyDTO.end_date}">
+                                <input type="date" name="end_date" id="end_date" value="${studyDTO.end_date}" <c:if test="${studyDTO.show_status=='N'}">disabled</c:if>>
                             </div>
                         </div>
                         <div class="row mb-3" id="contentsBox">
@@ -79,21 +79,23 @@
                                 </div>
                                 <input type="hidden" id="category" name="category" value="">
                             </div>
-                            <c:set var="cate" value="${fn:split(studyDTO.category,'|')}"/>
-                            <c:forEach var="cates" items="${cate}">
-                            <div class="col-lg-2"></div>
-                            <div class="col-md-8 col-lg-10 row">
+                            <c:if test="${studyDTO.category != ''}">
+                                <c:set var="cate" value="${fn:split(studyDTO.category,'|')}"/>
+                                <c:forEach var="cates" items="${cate}">
+                                <div class="col-lg-2"></div>
+                                <div class="col-md-8 col-lg-10 row">
 
-                                    <div class="col-9">
-                                        <input type="text" class="form-control contentsList" value="${cates}">
-                                    </div>
-                                    <div class="col-3">
-                                        <button type="button" class="btn btn-danger me-2 contentsDelBtn" onclick="delContents(this)">삭제</button>
-                                    </div>
-                                <br><br>
-                            </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control contentsList" value="${cates}">
+                                        </div>
+                                        <div class="col-3">
+                                            <button type="button" class="btn btn-danger me-2 contentsDelBtn" onclick="delContents(this)">삭제</button>
+                                        </div>
+                                    <br><br>
+                                </div>
 
-                            </c:forEach>
+                                </c:forEach>
+                            </c:if>
 
                         </div>
 
@@ -106,20 +108,22 @@
                                 </div>
                                 <input type="hidden" id="tags" name="tags" value="">
                             </div>
-                            <c:set var="tag" value="${fn:split(studyDTO.tags,'|')}"/>
-                            <c:forEach var="tags" items="${tag}">
-                            <div class="col-lg-2"></div>
-                            <div class="col-md-8 col-lg-10 row">
-                                <div class="col-9">
-                                    <input type="text" class="form-control tagsList" value="${tags}">
+                            <c:if test="${studyDTO.tags != ''}">
+                                <c:set var="tag" value="${fn:split(studyDTO.tags,'|')}"/>
+                                <c:forEach var="tags" items="${tag}">
+                                <div class="col-lg-2"></div>
+                                <div class="col-md-8 col-lg-10 row">
+                                    <div class="col-9">
+                                        <input type="text" class="form-control tagsList" value="${tags}">
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn btn-danger me-2 tagsDelBtn" onclick="deltags(this)">삭제</button>
+                                    </div>
+                                    <br><br>
                                 </div>
-                                <div class="col-3">
-                                    <button type="button" class="btn btn-danger me-2 tagsDelBtn" onclick="deltags(this)">삭제</button>
-                                </div>
-                                <br><br>
-                            </div>
 
-                            </c:forEach>
+                                </c:forEach>
+                            </c:if>
 
                         </div>
 
@@ -153,12 +157,37 @@
     modifyBtn.addEventListener("click", function(e){
         e.preventDefault();
         let contentsStr = "";
+        let title = document.getElementById("title");
+        let contents = document.getElementById("contents");
+        let status_y = document.getElementById("status_y");
+        console.log(status_y.checked);
+        if(title.value.trim().length<4 || title.value.trim().length>60){
+            alert("제목을 4 ~ 60자 사이로 입력해주세요");
+            return false;
+        }
+        if(contents.value.trim().length<20){
+            alert("내용을 20자 이상 입력해주세요");
+            return false;
+        }
+
+        if(status_y.checked){
+            let start_date = document.getElementById("start_date");
+            let end_date = document.getElementById("end_date");
+            if(start_date.value>end_date.value||start_date.value=="" ||end_date.value==""){
+                alert("학습 노출 기간을 확인해주세요");
+                return false;
+            }
+        }
 
         let contentsList = document.getElementsByClassName("contentsList");
         if(contentsList.length==0){
             document.getElementById("category").value = "";
         }
         for (i = 0; i < contentsList.length; i++) {
+            if(contentsList[i].value.trim()==""){
+                alert("분야를 입력해주세요");
+                return false;
+            }
             contentsStr += contentsList[i].value + "|";
             document.getElementById("category").value = contentsStr.substring(0, contentsStr.length - 1);
         }
@@ -170,6 +199,10 @@
             document.getElementById("tags").value = "";
         }
         for (i = 0; i < tagsList.length; i++) {
+            if(tagsList[i].value.trim()==""){
+                alert("해시태그를 입력해주세요");
+                return false;
+            }
             tagsStr += tagsList[i].value + "|";
             document.getElementById("tags").value = tagsStr.substring(0, tagsStr.length - 1);
         }
@@ -261,6 +294,18 @@
 
         innerText += ""
     });
+    function radioChange(element){
+        if(element.value == "N"){
+            document.getElementById("start_date").disabled = true;
+            document.getElementById("start_date").value=null;
+            document.getElementById("end_date").disabled = true;
+            document.getElementById("end_date").value=null;
+        }
+        else{
+            document.getElementById("start_date").disabled = false;
+            document.getElementById("end_date").disabled = false;
+        }
+    }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

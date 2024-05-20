@@ -51,6 +51,7 @@ public class LoginController {
             String[] uuids = uuid.toString().split("-");
             String newPwd = uuids[0];
             memberServiceIf.update_pwd(member_id, newPwd);
+            memberServiceIf.pwdChange(member_id);
 
             redirectAttributes.addAttribute("newPwd", newPwd);
 
@@ -122,7 +123,10 @@ public class LoginController {
             HttpSession session = request.getSession();
             session.setAttribute("login_info", memberDTO);
             log.info(memberDTO);
-            return "redirect:/main/main";
+            if(memberDTO.getPassword_r().equals("N"))
+                return "redirect:/main/main";
+            else
+                return "redirect:/member/changepwd";
         } else if (loginDTO != null && loginDTO.getStatus().equals("N")) {
             redirectAttributes.addAttribute("loginX", "1");
             return "redirect:/login/login";

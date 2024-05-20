@@ -161,6 +161,10 @@ public class MainController {
 
         return "redirect:/main/studyview?study_idx=" + study_idx;
     }
+    @GetMapping("/changepwd")
+    public void changePwd(){
+
+    }
 
     @GetMapping("/sharestudy")
     public void myShare(@Valid PageRequestDTO pageRequestDTO,
@@ -207,6 +211,23 @@ public class MainController {
 
         }
 
+    }
+    @PostMapping("/delete")
+    public String deletePost(@RequestParam(name = "study_idx")int study_idx){
+        int result = studyService.delete(study_idx);
+        if(result>0){
+            return "redirect:/main/mystudy";
+        }
+        else{
+            return "redirect:/main/studyview?study_idx="+study_idx;
+        }
+    }
+    @GetMapping("/searchMember")
+    @ResponseBody
+    public List<MemberDTO> searchMember(@RequestParam(name = "search_word")String search_word){
+        List<MemberDTO> memberDTOList = memberService.searchMemberList(search_word);
+
+        return memberDTOList;
     }
     @GetMapping("/likeinsert")
     public String insertLike(@RequestParam(name = "member_id")String member_id,
